@@ -49,14 +49,14 @@ $$
 where \(c(q, x_i)\) is content match and \(p(q-i)\) is the positional-attention proxy. A cache policy keeps \(B\) chunks from \(N\):
 
 $$
-B = \max(1,\operatorname{round}(bN))
+B = \max(1,\lfloor bN + 0.5 \rfloor)
 $$
 
 Success is measured by whether the evidence chunk \(e\) survives and ranks in the retained top-k:
 
 $$
-\operatorname{success@k} =
-\mathbf{1}\left[e \in S_B \land \operatorname{rank}_{S_B}(e) \le k\right]
+A_k =
+\mathbf{1}\left[e \in S_B \land r_B(e) \le k\right]
 $$
 
 Full derivation: `docs/MATH.md`.

@@ -21,12 +21,12 @@ The real transformer uses learned query/key vectors and a positional encoding in
 The important systems variable is not the absolute score. It is whether the evidence chunk survives after a cache policy keeps only `B` out of `N` chunks:
 
 $$
-S_B = \operatorname{policy}(s, c, d, B)
+S_B = P(s, c, d, B)
 $$
 
 $$
-\operatorname{success@k} =
-\mathbf{1}\left[e \in S_B \land \operatorname{rank}_{S_B}(e) \le k\right]
+A_k =
+\mathbf{1}\left[e \in S_B \land r_B(e) \le k\right]
 $$
 
 If `recent` fails but `stratified_geometry` succeeds at the same budget, the project has evidence that cache policy needs distance-aware structure, not only recency.

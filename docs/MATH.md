@@ -27,10 +27,10 @@ $$
 For query terms \(T\) and chunk tokens \(x_i\):
 
 $$
-c(q, x_i) = \frac{1}{|T|}\sum_{t \in T}\mathbf{1}[t \in x_i]\left(1 + 0.25 \cdot \min(\operatorname{count}_{x_i}(t)-1, 3)\right)
+c(q, x_i) = \frac{1}{|T|}\sum_{t \in T}\mathbf{1}[t \in x_i]\left(1 + 0.25 \cdot \min(n_i(t)-1, 3)\right)
 $$
 
-This makes repeated evidence terms count slightly more, but caps repetition so one repeated word cannot dominate the score.
+Here \(n_i(t)\) is the number of times term \(t\) appears in chunk \(x_i\). This makes repeated evidence terms count slightly more, but caps repetition so one repeated word cannot dominate the score.
 
 ## Positional Proxies
 
@@ -71,7 +71,7 @@ where \(d=q-i\), \(D\) is the maximum distance in the document, and \(i<2\) mark
 For a document with \(N\) chunks and budget ratio \(b\):
 
 $$
-B = \max(1,\ \operatorname{round}(bN))
+B = \max(1,\ \lfloor bN + 0.5 \rfloor)
 $$
 
 A policy selects:
@@ -85,8 +85,8 @@ $$
 Let \(e\) be the evidence chunk. The benchmark records top-k success as:
 
 $$
-\operatorname{success@k} =
-\mathbf{1}\left[e \in S_B \land \operatorname{rank}_{S_B}(e) \le k\right]
+A_k =
+\mathbf{1}\left[e \in S_B \land r_B(e) \le k\right]
 $$
 
 Evidence mass is:
@@ -110,9 +110,9 @@ The important pattern is not that one policy wins everywhere. The important patt
 
 $$
 \Delta =
-\operatorname{success@k}_{\text{stratified-geometry}}
+A_{k,\text{stratified-geometry}}
 -
-\operatorname{success@k}_{\text{recent}}
+A_{k,\text{recent}}
 $$
 
 At 25% budget in the first run:
@@ -122,4 +122,3 @@ $$
 $$
 
 That is the first evidence for the project claim: cache failure is a policy-plus-position failure, not only a cache-size failure.
-
