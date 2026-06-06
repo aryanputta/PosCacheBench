@@ -11,3 +11,4 @@ results/*.json
 results/*.csv
 graphify-out/cache/
 graphify-out/graph.json
+MASTER_PROMPT.md

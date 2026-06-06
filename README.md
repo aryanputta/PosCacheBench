@@ -127,7 +127,16 @@ First local run on 21 real Brain documents:
 
 The generated report includes baseline comparisons and heatmap-style tables:
 
+- `docs/HEATMAPS.md`
 - `results/report.md`
 - policy vs budget
 - region vs policy
 - encoding proxy vs policy
+
+Key heatmap at 25% KV budget:
+
+| evidence region | recent | geometry_top | stratified_geometry |
+|---|---:|---:|---:|
+| early | 0.000 | 0.600 | 0.248 |
+| middle | 0.000 | 0.981 | 0.676 |
+| late | 0.667 | 1.000 | 0.981 |
