@@ -1,7 +1,7 @@
 # Graph Report - .  (2026-06-06)
 
 ## Corpus Check
-- 9 files · ~3,801 words
+- 9 files · ~5,812 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -55,8 +55,8 @@ Cohesion: 0.33
 Nodes (4): content_score(), score_chunks(), get_encoding(), PositionalEncodingProxy
 
 ### Community 2 - "Community 2"
-Cohesion: 0.5
-Nodes (5): summarize(), write_csv(), write_json(), write_report(), main()
+Cohesion: 0.4
+Nodes (3): write_csv(), build_parser(), main()
 
 ### Community 3 - "Community 3"
 Cohesion: 0.7
@@ -67,16 +67,16 @@ Cohesion: 0.4
 Nodes (4): iter_text_files(), load_documents(), strip_markdown(), tokenize()
 
 ### Community 5 - "Community 5"
-Cohesion: 0.7
-Nodes (4): build_tasks(), choose_query_terms(), chunk_tokens(), EvidenceTask
-
-### Community 6 - "Community 6"
 Cohesion: 0.5
 Nodes (2): Document, CorpusTests
 
+### Community 6 - "Community 6"
+Cohesion: 0.7
+Nodes (4): build_tasks(), choose_query_terms(), chunk_tokens(), EvidenceTask
+
 ### Community 7 - "Community 7"
-Cohesion: 0.5
-Nodes (1): build_parser()
+Cohesion: 0.67
+Nodes (3): summarize(), write_json(), write_report()
 
 ### Community 8 - "Community 8"
 Cohesion: 1.0
@@ -91,11 +91,11 @@ Nodes (1): PosCacheBench package.
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `run_benchmark()` connect `Community 3` to `Community 0`, `Community 1`, `Community 2`, `Community 4`, `Community 5`?**
+- **Why does `run_benchmark()` connect `Community 3` to `Community 0`, `Community 1`, `Community 2`, `Community 4`, `Community 6`?**
   _High betweenness centrality (0.164) - this node is a cross-community bridge._
 - **Why does `BenchmarkConfig` connect `Community 0` to `Community 2`, `Community 3`, `Community 5`, `Community 6`?**
   _High betweenness centrality (0.131) - this node is a cross-community bridge._
-- **Why does `score_chunks()` connect `Community 1` to `Community 0`, `Community 3`, `Community 5`?**
+- **Why does `score_chunks()` connect `Community 1` to `Community 0`, `Community 3`, `Community 6`?**
   _High betweenness centrality (0.121) - this node is a cross-community bridge._
 - **Are the 5 inferred relationships involving `run_benchmark()` (e.g. with `load_documents()` and `build_tasks()`) actually correct?**
   _`run_benchmark()` has 5 INFERRED edges - model-reasoned connections that need verification._

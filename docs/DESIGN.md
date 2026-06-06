@@ -10,20 +10,28 @@ PosCacheBench isolates that question with a CPU benchmark.
 
 For a query at decode step `q` and a previous chunk `i`, a simplified attention score can be written as:
 
-```text
-score(i) = content_match(query, chunk_i) * positional_weight(q - i)
-```
+$$
+s_i = c(q, x_i)\,p(q-i)
+$$
+
+Here \(c(q, x_i)\) is content match and \(p(q-i)\) is a positional-attention proxy.
 
 The real transformer uses learned query/key vectors and a positional encoding inside the attention dot product. This benchmark replaces learned vector similarity with a lexical evidence proxy so the experiment can run on real documents without a GPU.
 
 The important systems variable is not the absolute score. It is whether the evidence chunk survives after a cache policy keeps only `B` out of `N` chunks:
 
-```text
-selected = policy(score, content_match, distance, budget=B)
-success = evidence_chunk in selected and rank(evidence_chunk) <= top_k
-```
+$$
+S_B = \operatorname{policy}(s, c, d, B)
+$$
+
+$$
+\operatorname{success@k} =
+\mathbf{1}\left[e \in S_B \land \operatorname{rank}_{S_B}(e) \le k\right]
+$$
 
 If `recent` fails but `stratified_geometry` succeeds at the same budget, the project has evidence that cache policy needs distance-aware structure, not only recency.
+
+Full formulas are in `docs/MATH.md`.
 
 ## Why This Is Different From Existing Aryan Projects
 
@@ -33,4 +41,3 @@ If `recent` fails but `stratified_geometry` succeeds at the same budget, the pro
 - `RKV-VL-Lab` evaluates multimodal decode compression.
 
 PosCacheBench focuses on the missing diagnostic layer: whether positional geometry explains where cache policies fail before choosing a compression method.
-

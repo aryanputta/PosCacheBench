@@ -23,6 +23,26 @@
 | uniform | full | 0.10 | 1.000 | 1.000 | 0.2855 | 1.000 |
 | uniform | full | 0.25 | 1.000 | 1.000 | 0.2855 | 1.000 |
 
+## Policy x Budget Heatmap
+
+| policy | 0.10 | 0.25 | 0.50 |
+|---|---:|---:|---:|
+| full | 0.917 | 0.917 | 0.917 |
+| recent | 0.143 | 0.222 | 0.571 |
+| lexical_top | 1.000 | 0.937 | 0.924 |
+| geometry_top | 0.800 | 0.860 | 0.905 |
+| stratified_geometry | 0.222 | 0.635 | 0.863 |
+
+## Encoding x Policy Heatmap
+
+| encoding | full | recent | lexical_top | geometry_top | stratified_geometry |
+|---|---:|---:|---:|---:|---:|
+| uniform | 1.000 | 0.312 | 1.000 | 1.000 | 0.640 |
+| alibi_proxy | 0.873 | 0.312 | 0.931 | 0.746 | 0.534 |
+| decay | 0.873 | 0.312 | 0.931 | 0.746 | 0.534 |
+| rope_proxy | 0.921 | 0.312 | 0.952 | 0.884 | 0.577 |
+| sink_rope_proxy | 0.921 | 0.312 | 0.952 | 0.899 | 0.582 |
+
 ## Recent-Only Failure Check
 
 - Budget 0.10: recent top-k success 0.143, stratified_geometry 0.222, delta +0.079.
@@ -60,6 +80,14 @@
 | late | stratified_geometry | 0.10 | 0.619 | 0.619 |
 | late | stratified_geometry | 0.25 | 0.981 | 0.981 |
 | late | stratified_geometry | 0.50 | 1.000 | 1.000 |
+
+## Region x Policy Heatmap at 25% Budget
+
+| region | recent | lexical_top | geometry_top | stratified_geometry |
+|---|---:|---:|---:|---:|
+| early | 0.000 | 0.810 | 0.600 | 0.248 |
+| middle | 0.000 | 1.000 | 0.981 | 0.676 |
+| late | 0.667 | 1.000 | 1.000 | 0.981 |
 
 ## Interpretation
 

@@ -38,6 +38,29 @@ real Brain corpus
   -> CSV/JSON/Markdown report
 ```
 
+## Math Model
+
+The benchmark scores chunk \(i\) for query step \(q\) as:
+
+$$
+s_i = c(q, x_i)\,p(q-i)
+$$
+
+where \(c(q, x_i)\) is content match and \(p(q-i)\) is the positional-attention proxy. A cache policy keeps \(B\) chunks from \(N\):
+
+$$
+B = \max(1,\operatorname{round}(bN))
+$$
+
+Success is measured by whether the evidence chunk \(e\) survives and ranks in the retained top-k:
+
+$$
+\operatorname{success@k} =
+\mathbf{1}\left[e \in S_B \land \operatorname{rank}_{S_B}(e) \le k\right]
+$$
+
+Full derivation: `docs/MATH.md`.
+
 ## Run
 
 ```bash
@@ -92,12 +115,19 @@ Initial target:
 At 25% KV budget, stratified_geometry should improve evidence top-k success over recent-only retention on early/middle evidence, while using the same retained-token budget.
 ```
 
-## Industry Alignment
+## First Results
 
-- **NVIDIA:** inference serving, KV-cache management, GPU memory pressure, TensorRT-LLM-style runtime thinking.
-- **Google DeepMind / Meta FAIR:** long-context model behavior, attention structure, evaluation methodology.
-- **Microsoft / Azure AI:** serving infrastructure and cost-quality tradeoffs under production constraints.
+First local run on 21 real Brain documents:
 
-## Brain Review
+| budget | recent | stratified_geometry | delta |
+|---:|---:|---:|---:|
+| 10% | 0.143 | 0.222 | +0.079 |
+| 25% | 0.222 | 0.635 | +0.413 |
+| 50% | 0.571 | 0.863 | +0.292 |
 
-See `docs/BRAIN_REVIEW.md` for the project check against Aryan's Brain standards and the Jane Street clipping lessons that generated this project.
+The generated report includes baseline comparisons and heatmap-style tables:
+
+- `results/report.md`
+- policy vs budget
+- region vs policy
+- encoding proxy vs policy

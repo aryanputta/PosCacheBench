@@ -217,6 +217,27 @@ def write_report(path: str | Path, rows: list[BenchmarkRow], docs: list[Document
             f"{stats['mean_evidence_mass']:.4f} | {stats['mean_cost_ratio']:.3f} |"
         )
 
+    lines.extend(["", "## Policy x Budget Heatmap", ""])
+    budgets = sorted({row.budget_ratio for row in rows})
+    lines.append("| policy | " + " | ".join(f"{budget:.2f}" for budget in budgets) + " |")
+    lines.append("|---|" + "|".join("---:" for _ in budgets) + "|")
+    for policy in POLICIES:
+        vals = []
+        for budget in budgets:
+            subset = [row for row in rows if row.policy == policy and row.budget_ratio == budget]
+            vals.append(f"{mean(1.0 if row.topk_success else 0.0 for row in subset):.3f}" if subset else "n/a")
+        lines.append(f"| {policy} | " + " | ".join(vals) + " |")
+
+    lines.extend(["", "## Encoding x Policy Heatmap", ""])
+    lines.append("| encoding | " + " | ".join(POLICIES) + " |")
+    lines.append("|---|" + "|".join("---:" for _ in POLICIES) + "|")
+    for encoding in ENCODINGS:
+        vals = []
+        for policy in POLICIES:
+            subset = [row for row in rows if row.encoding == encoding and row.policy == policy]
+            vals.append(f"{mean(1.0 if row.topk_success else 0.0 for row in subset):.3f}" if subset else "n/a")
+        lines.append(f"| {encoding} | " + " | ".join(vals) + " |")
+
     lines.extend(["", "## Recent-Only Failure Check", ""])
     for budget in sorted({row.budget_ratio for row in rows}):
         recent = [row for row in rows if row.policy == "recent" and row.budget_ratio == budget]
@@ -245,6 +266,21 @@ def write_report(path: str | Path, rows: list[BenchmarkRow], docs: list[Document
                     f"{mean(1.0 if row.evidence_retained else 0.0 for row in vals):.3f} |"
                 )
 
+    lines.extend(["", "## Region x Policy Heatmap at 25% Budget", ""])
+    target_budget = 0.25
+    lines.append("| region | recent | lexical_top | geometry_top | stratified_geometry |")
+    lines.append("|---|---:|---:|---:|---:|")
+    for region in ("early", "middle", "late"):
+        vals = []
+        for policy in ("recent", "lexical_top", "geometry_top", "stratified_geometry"):
+            subset = [
+                row
+                for row in rows
+                if row.region == region and row.policy == policy and abs(row.budget_ratio - target_budget) < 1e-9
+            ]
+            vals.append(f"{mean(1.0 if row.topk_success else 0.0 for row in subset):.3f}" if subset else "n/a")
+        lines.append(f"| {region} | " + " | ".join(vals) + " |")
+
     lines.extend(
         [
             "",
@@ -255,4 +291,3 @@ def write_report(path: str | Path, rows: list[BenchmarkRow], docs: list[Document
         ]
     )
     out.write_text("\n".join(lines), encoding="utf-8")
-
