@@ -2,6 +2,10 @@
 
 Benchmarking how positional-attention geometry interacts with KV-cache budget pressure in long-context inference.
 
+**Recruiter scan:** AI infrastructure intern, ML systems intern, LLM inference intern, and systems software intern proof. This repo is a focused benchmark: it studies when KV-cache retention policies fail because positional-attention geometry makes far evidence fragile under a fixed memory budget.
+
+**Proof in one line:** On 21 real Brain documents, `stratified_geometry` beat recent-only retention at the same KV budget, including a +0.413 top-k evidence-success gain at 25% budget.
+
 ## Gap
 
 Existing KV-cache benchmarks usually compare eviction or compression policies as if token importance is independent of the model's positional-attention geometry. In practice, a token can be semantically relevant but become fragile when the positional encoding, evidence distance, and cache budget conflict.
