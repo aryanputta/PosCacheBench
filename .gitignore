@@ -12,3 +12,6 @@ results/*.csv
 graphify-out/cache/
 graphify-out/graph.json
 MASTER_PROMPT.md
+
+# R console history; can transcribe local paths and commands.
+.Rhistory
